@@ -2,19 +2,19 @@ from euclidean import euclidean_algorithm, extended_euclidean_algorithm
 import numpy as np
 
 
-def discrete_normal_sample(n, mean_proportion=0.5, std_dev_proportion=0.15, num_samples=1):
+def discrete_normal_sample(n, mean_proportion=0.5, std_dev_proportion=0.15):
     # Calculate actual mean and standard deviation based on proportions
     mean = 1 + (n - 1) * mean_proportion  # Scales from 1 to n
     std_dev = n * std_dev_proportion
     
     # Generate continuous normal samples
-    continuous_samples = np.random.normal(mean, std_dev, num_samples)
+    continuous_samples = np.random.normal(mean, std_dev, 1)
     
     # Discretize and clip to range [1, n]
     discrete_samples = np.round(continuous_samples).astype(int)
     discrete_samples = np.clip(discrete_samples, 1, n)
     
-    return discrete_samples
+    return discrete_samples.item()
 
 
 class RSA():
@@ -34,7 +34,7 @@ class RSA():
         """Generates and Validates the public exponent"""
         if b is None:
             self.b = 0
-            while euclidean_algorithm(b, self.totient) != 1:
+            while euclidean_algorithm(self.b, self.totient) != 1:
                 self.b = discrete_normal_sample(self.totient)
         else:
             # b needs to have a multiplicative inverse
@@ -67,12 +67,13 @@ class RSA():
 
 def rsa_test():
 
+    # rsa = RSA(p=7, q=19)
     rsa = RSA(p=7, q=19, b=29)
 
     print(rsa.public_key)
     print(rsa.private_key)
 
-    plaintext = 60
+    plaintext = 92
     ciphertext = rsa.encrypt(plaintext)
     print(ciphertext)
     result = rsa.decrypt(ciphertext)

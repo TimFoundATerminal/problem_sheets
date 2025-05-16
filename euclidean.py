@@ -1,4 +1,12 @@
 
+def factor_n_given_a(n, b, a) -> int:
+    """Finds a factor of n given the private exponent"""
+
+    k = b*a - 1
+
+    return k
+
+
 def gcd(a, b) -> int:
     """Where a > b and are both in Z"""
 
@@ -44,6 +52,12 @@ def extended_euclidean_algorithm(a, b):
     return extended_gcd(a, b, 1, 0, 0, 1)
 
 
+def mod_inverse(a, m):
+    """Returns the multiplicative inverse should it exist"""
+    _, _, i = extended_euclidean_algorithm(a, m)
+    return (i + m) % m
+
+
 def euclidean_test():
     pairs = [(29, 108)]
     for a, b in pairs:
@@ -55,4 +69,6 @@ def euclidean_test():
 
 
 if __name__ == "__main__":
-    euclidean_test()
+    # euclidean_test()
+
+    print(mod_inverse(8684, 11021))
